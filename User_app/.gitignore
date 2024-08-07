@@ -30,7 +30,7 @@ log.txt
 /bazel-out
 
 # Node
-# /node_modules
+/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -54,7 +54,7 @@ yarn-error.log
 
 
 # Miscellaneous
-# /.angular
+/.angular
 /.angular/cache
 .sass-cache/
 /connect.lock

@@ -74,7 +74,8 @@ export class RegisterPage implements OnInit {
       }
 
       console.log('ok', this.register.check, this.register);
-      if (this.util.settingInfo.user_verify_with == 0) {
+      //here is 0 using 1 only for check
+      if (this.util.settingInfo.user_verify_with == 1) {
         console.log('email verification');
         const param = {
           'email': this.register.email,
@@ -122,8 +123,9 @@ export class RegisterPage implements OnInit {
           }
         });
       } else {
+        //here is 2 using 0 only for check
         console.log('phone verification');
-        if (this.util.settingInfo.sms_name == '2') {
+        if (this.util.settingInfo.sms_name == '0') {
           console.log('firebase verification');
           this.isLogin = true;
           this.api.post_public('v1/auth/verifyPhoneForFirebaseRegistrations', { email: this.register.email, country_code: this.register.country_code, mobile: this.register.mobile }).then((data: any) => {

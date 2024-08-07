@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // return [
-    //     'app' => 'Washing API By Initappz',
-    //     'version' => '1.0.0',
-    // ];
-    return view('hellotest');
+    return [
+        'app' => 'Washing API By Initappz',
+        'version' => '1.0.0',
+    ];
+    // return view('hellotest');
 });

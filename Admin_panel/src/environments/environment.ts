@@ -7,7 +7,7 @@
   Copyright and Good Faith Purchasers © 2024-present initappz.
 */
 export const environment = {
-  production: false,
-  baseUrl: 'http://127.0.0.1:8000/api/',
-  imageUrl: 'http://127.0.0.1:8000/storage/images/',
+  production: true,
+  baseUrl: 'https://u2.fovtysolutions.com/api/',
+  imageUrl: 'https://u2.fovtysolutions.com/storage/images/',
 };

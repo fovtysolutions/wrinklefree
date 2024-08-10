@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  baseUrl: 'https://api.domain.com/public/',
+  baseUrl: 'https://u2.fovtysolutions.com/',
 };

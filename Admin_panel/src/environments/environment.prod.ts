@@ -7,7 +7,7 @@
   Copyright and Good Faith Purchasers © 2024-present initappz.
 */
 export const environment = {
-  production: true,
-  baseUrl: 'https://u2.fovtysolutions.com/api',
+  production: false,
+  baseUrl: 'https://u2.fovtysolutions.com/api/',
   imageUrl: 'https://u2.fovtysolutions.com/storage/images/',
 };

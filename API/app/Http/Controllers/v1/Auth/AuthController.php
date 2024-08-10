@@ -193,20 +193,20 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'status' => 0,
             ]);
-            $mailTo = $mail;
-            // $mailTo = Mail::send(
-            //     'mails/register',
-            //     [
-            //         'app_name' => $generalInfo->name,
-            //         'otp' => $otp
-            //     ]
-            //     ,
-            //     function ($message) use ($mail, $username, $subject, $generalInfo) {
-            //         $message->to($mail, $username)
-            //             ->subject($subject);
-            //         $message->from($generalInfo->email, $generalInfo->name);
-            //     }
-            // );
+            // $mailTo = $mail;
+            $mailTo = Mail::send(
+                'mails/register',
+                [
+                    'app_name' => $generalInfo->name,
+                    'otp' => $otp
+                ]
+                ,
+                function ($message) use ($mail, $username, $subject, $generalInfo) {
+                    $message->to($mail, $username)
+                        ->subject($subject);
+                    $message->from($generalInfo->email, $generalInfo->name);
+                }
+            );
 
             $response = [
                 'data' => true,

@@ -11,6 +11,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { NgOtpInputModule } from 'ng-otp-input';
+import { SharedModule } from './shared/shared.module';
 export function customTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -27,6 +28,7 @@ export function LanguageLoader(http: HttpClient) {
     AppRoutingModule,
     HttpClientModule,
     NgOtpInputModule,
+    SharedModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

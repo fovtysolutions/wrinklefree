@@ -41,14 +41,7 @@
                 <img src="assets/imgs/home.png" />
               </ion-thumbnail>
               <ion-label> {{util.translate('At Home')}} </ion-label>
-              <ion-radio value="home" slot="end" mode="md"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-thumbnail>
-                <img src="assets/imgs/store.png" />
-              </ion-thumbnail>
-              <ion-label> {{util.translate('Self Pickup')}} </ion-label>
-              <ion-radio value="store" slot="end" mode="md"></ion-radio>
+              <ion-radio value="store" slot="end" mode="md" checked=""></ion-radio>
             </ion-item>
           </ion-radio-group>
         </ion-list>
@@ -68,9 +61,6 @@
           <ion-segment [(ngModel)]="slot" mode="md">
             <ion-segment-button value="pickup">
               <ion-label>{{util.translate("Pick Up")}} </ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="drop">
-              <ion-label>{{util.translate("Delivery")}} </ion-label>
             </ion-segment-button>
           </ion-segment>
 
@@ -108,6 +98,17 @@
             </ion-card>
 
             <ion-card class="slot-date-title">
+              <ion-label class="title">{{util.translate("Pick up Time")}} </ion-label>
+              <div class="slot-loader" *ngIf="pickupSlotsCalled == false">
+                <ion-spinner name="circular" color="primary"></ion-spinner>
+              </div>
+              <ion-row *ngIf="pickupSlotsCalled == true">
+                <ion-col size="12" style="color: red;">
+                  "If you place your order before 11 AM, it will be ready for pickup on the same day. Orders placed after 11 AM will be available for pickup the next day."
+                </ion-col>
+              </ion-row>
+            </ion-card>
+            <!-- <ion-card class="slot-date-title">
               <ion-label class="title">{{util.translate("Select Pick up Time")}} </ion-label>
               <div class="slot-loader" *ngIf="pickupSlotsCalled == false">
                 <ion-spinner name="circular" color="primary"></ion-spinner>
@@ -121,7 +122,7 @@
                   </ion-chip>
                 </ion-col>
               </ion-row>
-            </ion-card>
+            </ion-card> -->
           </div>
 
           <div class="slots" *ngIf="slot =='drop'">

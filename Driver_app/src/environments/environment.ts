@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  baseUrl: 'https://u2.fovtysolutions.com/',
+  production: true,
+  baseUrl: 'https://app1.wrinkle-free.co.in/',
 };

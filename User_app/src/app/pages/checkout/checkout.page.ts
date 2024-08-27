@@ -134,10 +134,12 @@ export class CheckoutPage implements OnInit {
 
     } else if (this.current == 3) {
       if (this.deliveryOption == 'home') {
-        this.swiper?.nativeElement.swiper.slidePrev();
-        this.cart.walletDiscount = 0;
-        this.walletCheck = false;
-        this.current = 2;
+        // this.swiper?.nativeElement.swiper.slidePrev();
+        // this.cart.walletDiscount = 0;
+        // this.walletCheck = false;
+        // this.current = 2;
+        this.swiper?.nativeElement.swiper.slideTo(0);
+        this.current = 1;
 
       } else {
         this.swiper?.nativeElement.swiper.slideTo(0);
@@ -154,10 +156,10 @@ export class CheckoutPage implements OnInit {
     this.pickupDays = [];
     this.deliveryDays = [];
     this.initDate = moment().format();
-    const startOfWeek = moment().startOf('week');
-    const endOfWeek = moment().endOf('week');
-    let day = startOfWeek;
-    while (day <= endOfWeek) {
+    
+    let day = moment(); // Start with today
+
+    for (let i = 0; i < 3; i++) { // Loop for today, tomorrow, and the day after tomorrow
       const data = {
         date: day.toDate().getDate(),
         day: day.format('ddd'),
@@ -166,11 +168,13 @@ export class CheckoutPage implements OnInit {
       }
       this.pickupDays.push(data);
       this.deliveryDays.push(data);
-      day = day.clone().add(1, 'd');
+      day = day.clone().add(1, 'd'); // Move to the next day
     }
+
     this.getPickupSlots();
     this.getPickupSlotsDelivery();
-  }
+}
+
 
   getPickupSlots() {
     console.log(moment(this.pickupDate).format('d'));
@@ -235,45 +239,45 @@ export class CheckoutPage implements OnInit {
   }
 
   previousWeek() {
-    if (this.currentWeek !== 0) {
-      this.pickupDays = [];
-      this.currentWeek = this.currentWeek - 1;
-      const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
-      const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
-      let day = startOfWeek;
-      while (day <= endOfWeek) {
-        const data = {
-          date: day.toDate().getDate(),
-          day: day.format('ddd'),
-          val: day.format(),
-          selectDay: day.format('dddd DD MMMM')
-        }
-        this.pickupDays.push(data);
-        day = day.clone().add(1, 'd');
-      }
-      console.log(this.pickupDays);
-    }
+    // if (this.currentWeek !== 0) {
+    //   this.pickupDays = [];
+    //   this.currentWeek = this.currentWeek - 1;
+    //   const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
+    //   const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
+    //   let day = startOfWeek;
+    //   while (day <= endOfWeek) {
+    //     const data = {
+    //       date: day.toDate().getDate(),
+    //       day: day.format('ddd'),
+    //       val: day.format(),
+    //       selectDay: day.format('dddd DD MMMM')
+    //     }
+    //     this.pickupDays.push(data);
+    //     day = day.clone().add(1, 'd');
+    //   }
+    //   console.log(this.pickupDays);
+    // }
   }
 
   previousWeekDelivery() {
-    if (this.currentWeek !== 0) {
-      this.deliveryDays = [];
-      this.currentWeek = this.currentWeek - 1;
-      const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
-      const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
-      let day = startOfWeek;
-      while (day <= endOfWeek) {
-        const data = {
-          date: day.toDate().getDate(),
-          day: day.format('ddd'),
-          val: day.format(),
-          selectDay: day.format('dddd DD MMMM')
-        }
-        this.deliveryDays.push(data);
-        day = day.clone().add(1, 'd');
-      }
-      console.log(this.deliveryDays);
-    }
+    // if (this.currentWeek !== 0) {
+    //   this.deliveryDays = [];
+    //   this.currentWeek = this.currentWeek - 1;
+    //   const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
+    //   const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
+    //   let day = startOfWeek;
+    //   while (day <= endOfWeek) {
+    //     const data = {
+    //       date: day.toDate().getDate(),
+    //       day: day.format('ddd'),
+    //       val: day.format(),
+    //       selectDay: day.format('dddd DD MMMM')
+    //     }
+    //     this.deliveryDays.push(data);
+    //     day = day.clone().add(1, 'd');
+    //   }
+    //   console.log(this.deliveryDays);
+    // }
   }
 
   selectDate(date: any) {
@@ -303,43 +307,43 @@ export class CheckoutPage implements OnInit {
   }
 
   nextWeek() {
-    this.pickupDays = [];
-    this.currentWeek++;
-    console.log(this.currentWeek);
-    const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
-    const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
-    let day = startOfWeek;
-    while (day <= endOfWeek) {
-      const data = {
-        date: day.toDate().getDate(),
-        day: day.format('ddd'),
-        val: day.format(),
-        selectDay: day.format('dddd DD MMMM')
-      }
-      this.pickupDays.push(data);
-      day = day.clone().add(1, 'd');
-    }
-    console.log(this.pickupDays);
+    // this.pickupDays = [];
+    // this.currentWeek++;
+    // console.log(this.currentWeek);
+    // const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
+    // const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
+    // let day = startOfWeek;
+    // while (day <= endOfWeek) {
+    //   const data = {
+    //     date: day.toDate().getDate(),
+    //     day: day.format('ddd'),
+    //     val: day.format(),
+    //     selectDay: day.format('dddd DD MMMM')
+    //   }
+    //   this.pickupDays.push(data);
+    //   day = day.clone().add(1, 'd');
+    // }
+    // console.log(this.pickupDays);
   }
 
   nextWeekDelivery() {
-    this.deliveryDays = [];
-    this.currentWeek++;
-    console.log(this.currentWeek);
-    const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
-    const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
-    let day = startOfWeek;
-    while (day <= endOfWeek) {
-      const data = {
-        date: day.toDate().getDate(),
-        day: day.format('ddd'),
-        val: day.format(),
-        selectDay: day.format('dddd DD MMMM')
-      }
-      this.deliveryDays.push(data);
-      day = day.clone().add(1, 'd');
-    }
-    console.log(this.deliveryDays);
+    // this.deliveryDays = [];
+    // this.currentWeek++;
+    // console.log(this.currentWeek);
+    // const startOfWeek = moment().add(this.currentWeek, 'weeks').startOf('week');
+    // const endOfWeek = moment().add(this.currentWeek, 'weeks').endOf('week');
+    // let day = startOfWeek;
+    // while (day <= endOfWeek) {
+    //   const data = {
+    //     date: day.toDate().getDate(),
+    //     day: day.format('ddd'),
+    //     val: day.format(),
+    //     selectDay: day.format('dddd DD MMMM')
+    //   }
+    //   this.deliveryDays.push(data);
+    //   day = day.clone().add(1, 'd');
+    // }
+    // console.log(this.deliveryDays);
   }
 
   payment() {
@@ -362,13 +366,19 @@ export class CheckoutPage implements OnInit {
       return false;
     }
     if (this.deliveryOption == 'home') {
-      console.log('address');
-      this.swiper?.nativeElement.swiper.slideNext();
-      this.cart.walletDiscount = 0;
-      this.walletCheck = false;
+      // console.log('address');
+      // this.swiper?.nativeElement.swiper.slideNext();
+      // this.cart.walletDiscount = 0;
+      // this.walletCheck = false;
+      // this.cart.calcuate();
+      // this.current = 2;
+      // this.getAddress();
+      console.log('payment');
+      this.swiper?.nativeElement.swiper.slideTo(2);
       this.cart.calcuate();
-      this.current = 2;
-      this.getAddress();
+      this.current = 3;
+      this.getWallet();
+      this.getPayments();
 
     } else {
       console.log('payment');
@@ -672,7 +682,7 @@ export class CheckoutPage implements OnInit {
       'wallet_used': this.walletCheck == true && this.cart.walletDiscount > 0 ? 1 : 0,
       'wallet_price':
         this.walletCheck == true && this.cart.walletDiscount > 0 ? this.cart.walletDiscount : 0,
-      "status": 0
+      "status": 1
     };
     this.util.show();
     this.api.post_private('v1/orders/create', param).then((data: any) => {

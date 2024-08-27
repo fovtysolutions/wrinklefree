@@ -8,6 +8,6 @@
 */
 export const environment = {
   production: false,
-  baseUrl: 'https://u2.fovtysolutions.com/api/',
-  imageUrl: 'https://u2.fovtysolutions.com/storage/images/',
+  baseUrl: 'https://app1.wrinkle-free.co.in/api/',
+  imageUrl: 'https://app1.wrinkle-free.co.in/storage/images/',
 };

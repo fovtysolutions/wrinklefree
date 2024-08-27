@@ -113,7 +113,8 @@ class OrdersController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
+            //'id' => 'required',
+            'id' => '',
         ]);
         if ($validator->fails()) {
             $response = [
@@ -125,6 +126,7 @@ class OrdersController extends Controller
             return response()->json($response, 404);
         }
         $data = Orders::find($request->id)->update($request->all());
+        // $data =  Orders::all();
 
         if (is_null($data)) {
             $response = [

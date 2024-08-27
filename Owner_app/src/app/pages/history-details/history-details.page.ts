@@ -440,8 +440,8 @@ export class HistoryDetailsPage implements OnInit {
     const modal = await this.modalController.create({
       component: SelectDriverPage,
       componentProps: {
-        "lat": this.deliveryLat,
-        "lng": this.deliveryLng
+        "lat": 22.72552381,
+        "lng": 75.88119507
       }
     });
     modal.onDidDismiss().then((data) => {

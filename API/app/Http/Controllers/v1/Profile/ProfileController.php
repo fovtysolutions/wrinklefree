@@ -258,8 +258,9 @@ class ProfileController extends Controller
     public function nearMeDrivers(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'lat' => 'required',
-            'lng' => 'required',
+            'lat' => '',
+            'lng' => '',
+            // required
         ]);
         if ($validator->fails()) {
             $response = [

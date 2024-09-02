@@ -29,6 +29,7 @@ export class WalletPage implements OnInit {
       this.dummy = [];
       if (data && data.status && data.status == 200 && data.data) {
         this.balance = data.data.balance;
+        // console.log("Radhe",this.balance = data.data);
         this.list = data.transactions;
         this.list.forEach(element => {
           element.created_at = moment(element.created_at).format('LL');

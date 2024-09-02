@@ -17,7 +17,7 @@ export class PhoneIconComponent  implements OnInit {
     
     setTimeout(() => {
     console.log('Hello Radhe...');
-    window.location.href = 'tel:9999667986';
+    window.location.href = 'tel:7770960161';
     }, 1000);
   }
 

@@ -3,6 +3,8 @@
     <div class="container-logo">
       <img src="assets/imgs/login-logo.png" alt="" class="logo">
     </div>
+    <span style="color:white"><b>ISO 9001 2015</b></span>
+    <span style="color:white">&#169; Wrinkle-free All Rights Reserved</span>
   </div>
   <div class="login-content">
     <form #loginForm="ngForm" class="animated animatedFadeInUp fadeInUp" *ngIf="util.settingInfo.user_login == 0">
@@ -15,7 +17,7 @@
         <p [hidden]="login.email !='' || submitted == false" class="ion-padding-start">
           {{util.translate("Email is required")}}
         </p>
-      </ion-text>
+      </ion-text> 
 
       <ion-item lines="none">
         <ion-icon name="lock-closed" slot="start"></ion-icon>

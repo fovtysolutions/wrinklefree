@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\v1\Auth\AuthController;
 use App\Http\Controllers\v1\Auth\RegisterController;
 use App\Http\Controllers\v1\Profile\ProfileController;
+use App\Http\Controllers\v1\Profile\WalletController;
 use App\Http\Controllers\v1\Auth\LogoutController;
 use App\Http\Controllers\v1\PagesController;
 use App\Http\Controllers\v1\SettingsController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\v1\ConversionsController;
 use App\Http\Controllers\v1\ComplaintsController;
 use App\Http\Controllers\v1\RatingsController;
 use App\Http\Controllers\v1\RegisterRequestController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -185,6 +187,11 @@ Route::prefix('/v1')->group(function () {
         Route::post('users/sendMailToAll', [ProfileController::class, 'sendMailToAll']);
         Route::post('users/sendMailToStores', [ProfileController::class, 'sendMailToStores']);
         Route::post('users/sendMailToDrivers', [ProfileController::class, 'sendMailToDrivers']);
+
+
+        Route::post('/wallet/add/{userId}', [WalletController::class, 'addAmount']);
+        Route::get('/wallet/transactions/{userId}', [WalletController::class, 'getTransactionHistory']);
+
 
     });
 

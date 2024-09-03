@@ -19,6 +19,7 @@
                 let url = "{{$url}}";
                 if(response && response.razorpay_payment_id){
                     window.location.replace(url+"?pay_id="+response.razorpay_payment_id);
+                    sessionStorage.setItem('getit',response.razorpay_payment_id);
                 }
             },
             "prefill": {

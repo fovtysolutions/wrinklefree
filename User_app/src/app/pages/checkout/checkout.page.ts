@@ -12,6 +12,7 @@ import { SuccessPage } from '../success/success.page';
 import { register } from 'swiper/element/bundle';
 import Swiper from 'swiper';
 import { ModalController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 register();
 @Component({
@@ -75,6 +76,7 @@ export class CheckoutPage implements OnInit {
     private chMod: ChangeDetectorRef,
     private zone: NgZone,
     private iab: InAppBrowser,
+    private route: ActivatedRoute,
   ) {
     setTimeout(() => {
       this.storeInfo();
@@ -83,6 +85,8 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnInit() {
+    const paymentKey = this.route.snapshot.paramMap.get('pay_OsGKtRZunV5z8h');
+    console.log(paymentKey); // Logs 'pay_OsGKtRZunV5z8h'
   }
 
   ngAfterViewInit() {

@@ -67,6 +67,7 @@ export class CheckoutPage implements OnInit {
 
   pay_method: any = '';
   payMethodName: any = '';
+  payId: string;
 
   constructor(
     public util: UtilService,
@@ -78,6 +79,7 @@ export class CheckoutPage implements OnInit {
     private iab: InAppBrowser,
     private route: ActivatedRoute,
   ) {
+    this.checkAndVerifyPayId();
     setTimeout(() => {
       this.storeInfo();
       this.dateConfi();
@@ -85,8 +87,19 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnInit() {
-    const paymentKey = this.route.snapshot.paramMap.get('pay_OsGKtRZunV5z8h');
-    console.log(paymentKey); // Logs 'pay_OsGKtRZunV5z8h'
+    
+  }
+
+  checkAndVerifyPayId(): void {
+    this.payId = this.route.snapshot.queryParamMap.get('pay_id') || '';
+    if (this.payId) {
+      this.verifyPurchaseRazorPay(this.payId);
+    } else {
+      this.payId = this.route.snapshot.queryParamMap.get('key_id') || '';
+      if (this.payId) {
+        this.verifyPurchaseRazorPay(this.payId);
+      }
+    }
   }
 
   ngAfterViewInit() {
@@ -834,7 +847,7 @@ export class CheckoutPage implements OnInit {
     }
     const browser = this.iab.create(this.api.baseUrl + 'v1/payments/razorPay?' + this.api.JSON_to_URLEncoded(param), '_blank', options);
     console.log('opended');
-    console.log('browser=>');
+    console.log('maine abhi add kiya hai',browser);
     browser.on('loadstop').subscribe(event => {
       console.log('event?;>11', event);
       const navUrl = event.url;

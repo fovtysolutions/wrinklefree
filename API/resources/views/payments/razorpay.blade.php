@@ -16,10 +16,9 @@
             "redirect":true,
             "handler": function (response) {
                 console.log(response);
-                let url = "{{$url}}";
+                let url = "{{$paymentUrl}}";
                 if(response && response.razorpay_payment_id){
                     window.location.replace(url+"?pay_id="+response.razorpay_payment_id);
-                    sessionStorage.setItem('getit',response.razorpay_payment_id);
                 }
             },
             "prefill": {

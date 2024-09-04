@@ -244,6 +244,59 @@ class ProfileController extends Controller
         return response()->json($response, 200);
     }
 
+    public function addAmountWallet(Request $request)
+    {
+        // $data = Auth::user();
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:users,id', 
+            'amount' => 'required|numeric|min:0',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error.',
+                'errors' => $validator->errors(),
+                'status' => 500
+            ], 500); 
+        }
+        
+        $user = User::find($request->id);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found.',
+                'status' => 404
+            ], 404);
+        }
+        
+        
+        $amount = $request->input('amount', 0); 
+        if (is_null($amount)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Amount is required and cannot be null.',
+                'status' => 400
+            ], 400);
+        }
+        
+        $user->deposit($amount); 
+        $data = User::find($request->id);
+        $transactions = DB::table('transactions')
+            ->select('amount', 'uuid', 'type', 'created_at', 'updated_at')
+            ->where('payable_id', $request->id)
+            ->get();
+        
+        return response()->json([
+            'data' => $data,
+            'transactions' => $transactions,
+            'success' => true,
+            'status' => 200
+        ], 200);
+        
+    }
+    
+
     public function getAllDriver(Request $request)
     {
         $data = User::where('type', 'driver')->get();

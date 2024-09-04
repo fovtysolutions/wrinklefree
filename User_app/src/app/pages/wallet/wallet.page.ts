@@ -12,6 +12,8 @@ export class WalletPage implements OnInit {
   dummy: any[] = [];
   list: any[] = [];
   balance: any = 0;
+  amount: number;
+  showInput: boolean = false; 
   constructor(
     public util: UtilService,
     public api: ApiService
@@ -20,6 +22,10 @@ export class WalletPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  toggleInput() {
+    this.showInput = !this.showInput;  // Toggle the input field visibility
   }
 
   getWallet() {
@@ -34,6 +40,36 @@ export class WalletPage implements OnInit {
         this.list.forEach(element => {
           element.created_at = moment(element.created_at).format('LL');
         })
+      }
+    }, error => {
+      console.log(error);
+      this.dummy = [];
+      this.util.apiErrorHandler(error);
+    }).catch(error => {
+      console.log(error);
+      this.dummy = [];
+      this.util.apiErrorHandler(error);
+    });
+  }
+
+  addAmount() {
+    this.dummy = Array(10);
+  
+    const requestData = {
+      id: localStorage.getItem('uid'),
+      amount: this.amount  
+    };
+  
+    this.api.post_private('v1/profile/addAmount', requestData).then((data: any) => {
+      console.log(data);
+      this.dummy = [];
+      if (data && data.status && data.status == 200 && data.data) {
+        this.balance = data.data.balance;
+        this.list = data.transactions;
+        this.list.forEach(element => {
+          element.created_at = moment(element.created_at).format('LL');
+        })
+        this.showInput = false;
       }
     }, error => {
       console.log(error);

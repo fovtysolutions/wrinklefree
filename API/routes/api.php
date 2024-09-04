@@ -187,13 +187,10 @@ Route::prefix('/v1')->group(function () {
         Route::post('users/sendMailToAll', [ProfileController::class, 'sendMailToAll']);
         Route::post('users/sendMailToStores', [ProfileController::class, 'sendMailToStores']);
         Route::post('users/sendMailToDrivers', [ProfileController::class, 'sendMailToDrivers']);
-
-
-        Route::post('/wallet/add/{userId}', [WalletController::class, 'addAmount']);
-        Route::get('/wallet/transactions/{userId}', [WalletController::class, 'getTransactionHistory']);
-
-
     });
+
+    // Route::post('/wallet/add/{userId}', [WalletController::class, 'addAmount']);
+    // Route::get('/wallet/transactions/{userId}', [WalletController::class, 'getTransactionHistory']);
 
     // User Routes
     Route::group(['middleware' => ['jwt', 'jwt.auth']], function () {
@@ -203,6 +200,7 @@ Route::prefix('/v1')->group(function () {
         Route::post('referral/redeemReferral', [ReferralController::class, 'redeemReferral']);
         Route::post('profile/getMyWallet', [ProfileController::class, 'getMyWallet']);
         Route::post('profile/getMyWalletBalance', [ProfileController::class, 'getMyWalletBalance']);
+        Route::post('profile/addAmount', [ProfileController::class, 'addAmountWallet']);
         Route::post('profile/getProfile', [ProfileController::class, 'getProfile']);
         Route::post('profile/update', [ProfileController::class, 'updateProfile']);
 

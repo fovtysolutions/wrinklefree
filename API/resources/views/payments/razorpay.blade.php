@@ -18,7 +18,13 @@
                 console.log(response);
                 let url = "{{$paymentUrl}}";
                 if(response && response.razorpay_payment_id){
-                    window.location.replace(url+"?pay_id="+response.razorpay_payment_id);
+                    // window.location.replace(url+"?pay_id="+response.razorpay_payment_id);
+                    var newWindow = window.open(url+"?pay_id="+response.razorpay_payment_id, "_blank");
+                    setTimeout(function() {
+                        if (newWindow) {
+                            newWindow.close();  // Close the new window after 3 seconds
+                        }
+                    }, 10000);
                 }
             },
             "prefill": {

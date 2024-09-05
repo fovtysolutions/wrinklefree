@@ -772,7 +772,11 @@ class PaymentsController extends Controller
         $razorKey = $credsData->key;
         $razorSecret = $credsData->secret;
         $url = url('/api/v1/success_payments');
-        $paymentUrl = env('PAYMENT_URL');
+        if($request->walleturl === '') {
+            $paymentUrl = env('PAYMENT_URL');
+        }else{
+            $paymentUrl = env('WALLET_URL');
+        }
         return view('payments/razorpay', ['key' => $razorKey, 'amount' => $request->amount, 'url' => $url, 'name' => $request->name, 'logo' => $request->logo, 'email' => $request->email, 'app_color' => $request->app_color,'paymentUrl' => $paymentUrl]);
     }
 

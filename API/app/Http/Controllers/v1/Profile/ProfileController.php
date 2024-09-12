@@ -249,7 +249,7 @@ class ProfileController extends Controller
         // $data = Auth::user();
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:users,id', 
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric',
         ]);
         
         if ($validator->fails()) {

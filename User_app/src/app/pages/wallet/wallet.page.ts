@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
-import { SessionStorageService  } from 'src/app/services/sessionstoragesetup.service';
+import { LocalStorageService  } from 'src/app/services/sessionstoragesetup.service';
 import * as moment from 'moment';
 import { InAppBrowser, InAppBrowserOptions } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { ActivatedRoute } from '@angular/router';
@@ -23,14 +23,14 @@ export class WalletPage implements OnInit {
     private iab: InAppBrowser,
     private route: ActivatedRoute,
     public api: ApiService,
-    private sessionStorageService: SessionStorageService
+    private LocalStorageService: LocalStorageService
   ) {
     this.getWallet();
     this.checkAndVerifyPayId();
   }
 
   ngOnInit() {
-    this.sessionStorageService.myPayKey$.subscribe(isMyPayKeySet => {
+    this.LocalStorageService.myPayKey$.subscribe(isMyPayKeySet => {
       if (isMyPayKeySet) {
         this.onMyPayKeySet(); // Function ko call karenge
       }
@@ -38,8 +38,8 @@ export class WalletPage implements OnInit {
   }
 
   onMyPayKeySet() {
-    const myPayValue = sessionStorage.getItem('mypay'); 
-    console.log('mypay key is set in sessionStorage');
+    const myPayValue = localStorage.getItem('mypay'); 
+    // console.log('mypay key is set in sessionStorage');
     console.log('mypay value:', myPayValue);
     if (myPayValue) {
       this.verifyPurchaseRazorPay(myPayValue);
@@ -143,52 +143,25 @@ export class WalletPage implements OnInit {
       app_color: this.util && this.util.app_color ? this.util.app_color : '#f47878',
       walleturl: 'wallet'
     }
-
-    const browser = this.iab.create(this.api.baseUrl + 'v1/payments/razorPay?' + this.api.JSON_to_URLEncoded(param), '_blank', options);
     console.log('opended');
-    console.log(this.api.JSON_to_URLEncoded(param));
-    browser.on('loadstop').subscribe(event => {
-      console.log('event?;>11', event);
-      const navUrl = event.url;
-      if (navUrl.includes('success_payments')) {
-        const urlItems = new URL(event.url);
-        console.log(urlItems);
-        const orderId = urlItems.searchParams.get('pay_id');
-        if (orderId && orderId != null) {
-          this.verifyPurchaseRazorPay(orderId);
-        } else {
-          const orderId = urlItems.searchParams.get('key_id');
-          this.verifyPurchaseRazorPay(orderId);
-        }
-
-      }
-
-      if (navUrl.includes('status=authorized') || navUrl.includes('status=failed') || navUrl.includes('redirect_callback')) {
-        console.log('close here');
-        browser.close();
-        const urlItems = new URL(event.url).pathname;
-        console.log('--->>', urlItems.split('/'), urlItems.split('/').length, urlItems.split('/')[3]);
-        if (urlItems.split('/').length >= 5 && urlItems.split('/')[3].startsWith('pay_')) {
-          const paymentId = urlItems.split('/')[3];
-          console.log('paymentId', paymentId);
-          this.verifyPurchaseRazorPay(paymentId);
-        }
-      }
-
-    });
+    const windowRef = window.open(
+      this.api.baseUrl + 'v1/payments/razorPay?' + this.api.JSON_to_URLEncoded(param),
+      'paymentWindow', 
+      'width=800,height=600'
+    );
+    window.location.reload();
     console.log('browser=> end');
   }
 
   verifyPurchaseRazorPay(paymentId: any) {
+    localStorage.removeItem('mypay');
     this.util.show();
     this.api.get_private('v1/payments/VerifyRazorPurchase?id=' + paymentId).then((data: any) => {
       console.log(data);
       if (data && data.status && data.status == 200 && data.success && data.success.status && data.success.status == 'captured') {
         this.util.hide();
         console.log(data.success);
-        
-        // this.addAmount(150);
-        sessionStorage.removeItem('mypay');
+        this.addAmount(data.success.amount/100);
       } else {
         this.util.hide();
         this.util.errorToast(this.util.translate('Something went wrong while payments. please contact administrator'));

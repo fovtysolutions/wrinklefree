@@ -26,9 +26,6 @@
             echo "<script>
                     $(document).ready(function() {
                         sessionStorage.setItem('mypay', '$getit');
-                        setTimeout(function() {
-                            window.close(); 
-                        }, 10000);  // 10000ms = 3 seconds
                     });
                 </script>";
         }
@@ -39,12 +36,17 @@
             echo "<script>
                     $(document).ready(function() {
                         sessionStorage.setItem('mypay', '$getit');
-                        setTimeout(function() {
-                            window.close(); 
-                        }, 10000);  // 10000ms = 3 seconds
                     });
                 </script>";
         }
     ?>
+    <a href="javascript:void(0)" id="closeWindow">Close</a>
+    <script>
+        $(document).ready(function() {
+            $('#closeWindow').click(function() {
+                window.close();
+            });
+        });
+    </script>
 </body>
 </html>

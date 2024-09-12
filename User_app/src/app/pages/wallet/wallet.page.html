@@ -67,19 +67,19 @@
       </ion-label>
     </div>
   </div>
-  <br>
-  <br>
-  <div class="flex_div_wallet">
-    <div>
-      <ion-label>
-        <h2 style="cursor:pointer">
-          <button *ngIf="!showInput" class="cool-button" (click)="toggleInput()">Add Amount</button>
-          <div *ngIf="showInput">
-            <input type="number" [(ngModel)]="amount" style="margin-right: 1rem;" placeholder="Enter amount" />
-            <button class="cool-button" (click)="payWithRazorPay()">Submit</button>
-          </div>
-        </h2>
-      </ion-label>
-    </div>
-  </div>
 </ion-content>  
+<br>
+<br>
+<div class="flex_div_wallet">
+  <div>
+    <ion-label>
+      <h2 style="cursor:pointer">
+        <button *ngIf="!showInput" class="cool-button" (click)="toggleInput()">Add Amount</button>
+        <div *ngIf="showInput">
+          <input type="number" [(ngModel)]="amount" style="margin-right: 1rem;" placeholder="Enter amount" />
+          <button class="cool-button" (click)="payWithRazorPay()">Submit</button>
+        </div>
+      </h2>
+    </ion-label>
+  </div>
+</div>

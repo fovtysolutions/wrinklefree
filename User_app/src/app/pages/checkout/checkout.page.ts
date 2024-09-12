@@ -13,6 +13,7 @@ import { register } from 'swiper/element/bundle';
 import Swiper from 'swiper';
 import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { LocalStorageService  } from 'src/app/services/sessionstoragesetup.service';
 
 register();
 @Component({
@@ -21,6 +22,9 @@ register();
   styleUrls: ['./checkout.page.scss'],
 })
 export class CheckoutPage implements OnInit {
+  dummy: any[] = [];
+  list: any[] = [];
+  showInput: boolean = false; 
   @ViewChild("swiper") swiper?: ElementRef<{ swiper: Swiper }>
   @ViewChild("slideDate") dateslide?: ElementRef<{ swiper: Swiper }>
   current = 1;
@@ -78,6 +82,7 @@ export class CheckoutPage implements OnInit {
     private zone: NgZone,
     private iab: InAppBrowser,
     private route: ActivatedRoute,
+    private LocalStorageService: LocalStorageService
   ) {
     this.checkAndVerifyPayId();
     setTimeout(() => {
@@ -87,7 +92,24 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.LocalStorageService.myPayKey$.subscribe(isMyPayKeySet => {
+      if (isMyPayKeySet) {
+        this.onMyPayKeySet(); // Function ko call karenge
+      }
+    });
+  }
+
+  onMyPayKeySet() {
+    const myPayValue = localStorage.getItem('mypay'); 
+    // console.log('mypay key is set in sessionStorage');
+    console.log('mypay value:', myPayValue);
+    if (myPayValue) {
+      this.verifyPurchaseRazorPay(myPayValue);
+    } else {
+      if (myPayValue) {
+        this.verifyPurchaseRazorPay(myPayValue);
+      }
+    }
   }
 
   checkAndVerifyPayId(): void {
@@ -583,6 +605,10 @@ export class CheckoutPage implements OnInit {
           this.payWithFlutterwave();
         } else if (this.pay_method == 9) {
           console.log('paykun');
+        } else if (this.pay_method == 10) {
+          console.log('paylater');
+          this.payMethodName = 'paylater';
+          this.paylater();
         }
       }
     });
@@ -635,6 +661,40 @@ export class CheckoutPage implements OnInit {
       this.payName = payMethod[0].name;
     }
   }
+
+  paylater() {
+    let walletsUdhar: number = 0;
+    console.log(this.cart.grandTotal);
+    this.addAmount(`-${this.cart.grandTotal}`);
+  }
+
+  addAmount(walletAmount: any) {
+    this.dummy = Array(10);
+  
+    const requestData = {
+      id: localStorage.getItem('uid'),
+      amount: walletAmount 
+    };
+  
+    this.api.post_private('v1/profile/addAmount', requestData).then((data: any) => {
+      console.log(data);
+      this.dummy = [];
+      if (data && data.status && data.status == 200 && data.data) {
+        this.balance = data.data.balance;
+        // console.log(this.balance);
+        this.createOrder('paylater');
+      }
+    }, error => {
+      console.log(error);
+      this.dummy = [];
+      this.util.apiErrorHandler(error);
+    }).catch(error => {
+      console.log(error);
+      this.dummy = [];
+      this.util.apiErrorHandler(error);
+    });
+  }
+
 
   async stripePayment() {
     const options: InAppBrowserOptions = {
@@ -693,7 +753,7 @@ export class CheckoutPage implements OnInit {
       "pickup_date": this.pickupDate,
       // "pickup_slot": this.pickupTime,
       "pickup_slot": 12,
-      "delivery_date": this.deliveryDate,
+      "delivery_date": this.pickupDate,
       "delivery_slot": 12,
       // "delivery_slot": this.deliveryTime,
       'wallet_used': this.walletCheck == true && this.cart.walletDiscount > 0 ? 1 : 0,
@@ -845,43 +905,50 @@ export class CheckoutPage implements OnInit {
       name: this.getName(),
       app_color: this.util && this.util.app_color ? this.util.app_color : '#f47878'
     }
-    const browser = this.iab.create(this.api.baseUrl + 'v1/payments/razorPay?' + this.api.JSON_to_URLEncoded(param), '_blank', options);
     console.log('opended');
-    console.log('maine abhi add kiya hai',browser);
-    browser.on('loadstop').subscribe(event => {
-      console.log('event?;>11', event);
-      const navUrl = event.url;
-      if (navUrl.includes('success_payments')) {
-        const urlItems = new URL(event.url);
-        console.log(urlItems);
-        const orderId = urlItems.searchParams.get('pay_id');
-        if (orderId && orderId != null) {
-          this.verifyPurchaseRazorPay(orderId);
-        } else {
-          const orderId = urlItems.searchParams.get('key_id');
-          this.verifyPurchaseRazorPay(orderId);
-        }
+    // const browser = this.iab.create(this.api.baseUrl + 'v1/payments/razorPay?' + this.api.JSON_to_URLEncoded(param), '_blank', options);
+    // console.log('maine abhi add kiya hai',browser);
+    // browser.on('loadstop').subscribe(event => {
+    //   console.log('event?;>11', event);
+    //   const navUrl = event.url;
+    //   if (navUrl.includes('success_payments')) {
+    //     const urlItems = new URL(event.url);
+    //     console.log(urlItems);
+    //     const orderId = urlItems.searchParams.get('pay_id');
+    //     if (orderId && orderId != null) {
+    //       this.verifyPurchaseRazorPay(orderId);
+    //     } else {
+    //       const orderId = urlItems.searchParams.get('key_id');
+    //       this.verifyPurchaseRazorPay(orderId);
+    //     }
 
-      }
+    //   }
 
-      if (navUrl.includes('status=authorized') || navUrl.includes('status=failed') || navUrl.includes('redirect_callback')) {
-        console.log('close here');
-        browser.close();
-        const urlItems = new URL(event.url).pathname;
-        console.log('--->>', urlItems.split('/'), urlItems.split('/').length, urlItems.split('/')[3]);
-        if (urlItems.split('/').length >= 5 && urlItems.split('/')[3].startsWith('pay_')) {
-          const paymentId = urlItems.split('/')[3];
-          console.log('paymentId', paymentId);
-          this.verifyPurchaseRazorPay(paymentId);
-        }
-      }
+    //   if (navUrl.includes('status=authorized') || navUrl.includes('status=failed') || navUrl.includes('redirect_callback')) {
+    //     console.log('close here');
+    //     browser.close();
+    //     const urlItems = new URL(event.url).pathname;
+    //     console.log('--->>', urlItems.split('/'), urlItems.split('/').length, urlItems.split('/')[3]);
+    //     if (urlItems.split('/').length >= 5 && urlItems.split('/')[3].startsWith('pay_')) {
+    //       const paymentId = urlItems.split('/')[3];
+    //       console.log('paymentId', paymentId);
+    //       this.verifyPurchaseRazorPay(paymentId);
+    //     }
+    //   }
 
-    });
+    // });
+    const windowRef = window.open(
+      this.api.baseUrl + 'v1/payments/razorPay?' + this.api.JSON_to_URLEncoded(param),
+      'paymentWindow', 
+      'width=800,height=600'
+    );
+    window.location.reload();
     console.log('browser=> end');
   }
 
   verifyPurchaseRazorPay(paymentId: any) {
-    this.util.show();
+      localStorage.removeItem('mypay');
+      this.util.show();
     this.api.get_private('v1/payments/VerifyRazorPurchase?id=' + paymentId).then((data: any) => {
       console.log(data);
       if (data && data.status && data.status == 200 && data.success && data.success.status && data.success.status == 'captured') {
@@ -889,16 +956,16 @@ export class CheckoutPage implements OnInit {
         this.createOrder(JSON.stringify(data.success));
       } else {
         this.util.hide();
-        this.util.errorToast(this.util.translate('Something went wrong while payments. please contact administrator'));
+        this.util.errorToast(this.util.translate('Something went wrong while payments. please contact administrator1'));
       }
     }, error => {
       console.log(error);
       this.util.hide();
-      this.util.errorToast(this.util.translate('Something went wrong while payments. please contact administrator'));
+      this.util.errorToast(this.util.translate('Something went wrong while payments. please contact administrator2'));
     }).catch(error => {
       console.log(error);
       this.util.hide();
-      this.util.errorToast(this.util.translate('Something went wrong while payments. please contact administrator'));
+      this.util.errorToast(this.util.translate('Something went wrong while payments. please contact administrator3'));
     });
   }
 

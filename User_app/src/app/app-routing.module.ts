@@ -144,6 +144,11 @@ const routes: Routes = [
     path: 'wallet',
     loadChildren: () => import('./pages/wallet/wallet.module').then(m => m.WalletPageModule)
   }
+  ,
+  {
+    path: 'paysuccess',
+    loadChildren: () => import('./pages/paysuccess/paysuccess.module').then(m => m.paysuccessPageModule)
+  }
 ];
 @NgModule({
   imports: [

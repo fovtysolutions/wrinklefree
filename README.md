@@ -1,7 +1,10 @@
 # loundryapp
 this loundry app development process
 
-ng build --configuration production
+Anguler--> ng build --configuration production
+
+Anguler--> ng generate component pages/paysuccess
+ng generate service local-storage
 
 php artisan storage:link
 

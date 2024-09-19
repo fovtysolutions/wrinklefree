@@ -127,7 +127,7 @@ export class HistoryDetailsPage implements OnInit {
           if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(info.address)) {
             const address = JSON.parse(info.address);
             console.log(address);
-            this.deliveryAddress = address.house + ' ' + address.address + ' ' + address.landmark + ' ' + address.pincode;
+            this.deliveryAddress = address.house + ' ' + address.building + ' ' + address.socity + ' ' + address.street + ' ' + address.address + ' ' + address.landmark + ' ' + address.city + ' ' + address.pincode;
           } else {
             this.deliveryAddress = this.util.translate('Self Drop & Pickup');
           }

@@ -19,6 +19,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./manage-users.component.scss']
 })
 export class ManageUsersComponent implements OnInit {
+  dummy: any[] = [];
+  list: any[] = [];
+  balance: any = 0;
   uid: any = '';
   name: any = '';
   cover: any = '';
@@ -28,6 +31,7 @@ export class ManageUsersComponent implements OnInit {
   orders: any[] = [];
   address: any[] = [];
   ratings: any[] = [];
+  transaction: any[] = [];
   constructor(
     public util: UtilService,
     public api: ApiService,
@@ -51,6 +55,8 @@ export class ManageUsersComponent implements OnInit {
       console.log(data);
       this.util.hide();
       if (data && data.status && data.status == 200) {
+        console.log(data.data);
+        
         const info = data.data;
         console.log('info', info);
         this.name = info.user.first_name + ' ' + info.user.last_name;
@@ -68,7 +74,7 @@ export class ManageUsersComponent implements OnInit {
         this.orders = info.orders;
         this.address = info.address;
         this.ratings = info.rating;
-
+        this.transaction = info.transaction;
 
       }
     }, error => {
@@ -96,6 +102,7 @@ export class ManageUsersComponent implements OnInit {
     }
     this.router.navigate(['order-details'], param);
   }
+
 
   deleteAddress(item: any) {
     console.log(item);

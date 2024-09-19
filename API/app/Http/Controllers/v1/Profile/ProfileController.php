@@ -399,11 +399,17 @@ class ProfileController extends Controller
                 $loop->storeInfo = Stores::where('uid', $loop->store_id)->first();
             }
         }
+        $transactions = DB::table('transactions')
+            ->select('amount', 'uuid', 'type', 'created_at', 'updated_at')
+            ->where('payable_id', $request->id)
+            ->get();
         $data = [
             'user' => $user,
             'address' => $address,
             'orders' => $orders,
-            'rating' => $rating
+            'rating' => $rating,
+            'transaction' => $transactions
+
         ];
         $response = [
             'data' => $data,

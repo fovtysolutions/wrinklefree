@@ -3,6 +3,8 @@ import { ActionSheetController } from '@ionic/angular';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+
 import * as moment from 'moment';
 
 @Component({
@@ -11,6 +13,7 @@ import * as moment from 'moment';
   styleUrls: ['./history-details.page.scss'],
 })
 export class HistoryDetailsPage implements OnInit {
+  dummy: any[] = [];
   id: any = '';
   apiCalled: boolean = false;
   userName: any = '';
@@ -51,8 +54,8 @@ export class HistoryDetailsPage implements OnInit {
     'created', // 0
     'accepted', // 1
     'rejected', // 2
-    'ongoing', // 3
-    'completed', // 4
+    'Picked', // 3
+    'Delivered', // 4
     'cancelled', // 5
     'refunded', // 6
     'delayed', // 7
@@ -63,6 +66,7 @@ export class HistoryDetailsPage implements OnInit {
     public api: ApiService,
     public route: ActivatedRoute,
     private actionSheetController: ActionSheetController,
+    private AlertController: AlertController,
   ) {
     this.route.queryParams.subscribe((data: any) => {
       console.log(data);
@@ -95,12 +99,15 @@ export class HistoryDetailsPage implements OnInit {
         this.walletPrice = info.wallet_price;
         this.statusNumber = info.status;
         this.status = this.util.translate(this.statusName[info.status]);
-        if (info.paid != 'cod') {
-          this.paid = 'Paid';
-        } else {
+        if (info.paid == 'cod') {
           this.paid = 'COD';
+        } else if (info.paid == 'paylater') {
+          this.paid = 'Pay later';
+        }else{
+          this.paid = 'Paid';
         }
 
+        
         if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(info.items)) {
           this.items = JSON.parse(info.items);
         }
@@ -112,7 +119,7 @@ export class HistoryDetailsPage implements OnInit {
             console.log(address);
             this.deliveryLat = address.lat;
             this.deliveryLng = address.lng;
-            this.deliveryAddress = address.house + ' ' + address.address + ' ' + address.landmark + ' ' + address.pincode;
+            this.deliveryAddress = address.house + ' ' + address.building + ' ' + address.socity + ' ' + address.street + ' ' + address.address + ' ' + address.landmark + ' ' + address.city + ' ' + address.pincode;
           } else {
             this.deliveryAddress = this.util.translate('Self Drop & Pickup');
           }
@@ -143,6 +150,7 @@ export class HistoryDetailsPage implements OnInit {
       this.util.apiErrorHandler(error);
     });
   }
+  
   ngOnInit() {
   }
 
@@ -278,6 +286,81 @@ export class HistoryDetailsPage implements OnInit {
   }
 
 
+async makeCodMoney() {
+  const alert = await this.AlertController.create({
+    header: this.util.translate('Insert COD Amount'),
+    inputs: [
+      {
+        name: 'codAmount',
+        type: 'number', // Change to 'text' if you want text input
+        placeholder: this.util.translate('Enter COD Amount'),
+        attributes: {
+          min: 0 // Optional: set minimum value for the input
+        }
+      }
+    ],
+    buttons: [
+      {
+        text: this.util.translate('Cancel'),
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: this.util.translate('Submit Money'),
+        handler: (data) => {
+          this.grandTotal
+          let makeMoneyChanges = data.codAmount - this.grandTotal;
+          console.log('COD Amount:', this.userId);
+          if(data.codAmount === this.grandTotal){
+            const param = {
+              "id": this.id,
+              "status": this.changeStatusOrder
+            };
+            this.amountSetformback(param);
+          }else{
+            this.addAmount(makeMoneyChanges);
+          }
+          
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+addAmount(walletAmount: any) {
+  this.dummy = Array(10);
+
+  const requestData = {
+    id: this.userId,
+    amount: walletAmount 
+  };
+  this.api.post_private('v1/profile/addAmount', requestData).then((data: any) => {
+    console.log(data);
+    this.dummy = [];
+    if (data && data.status && data.status == 200 && data.data) {
+      const param = {
+        "id": this.id,
+        "status": this.changeStatusOrder
+      };
+      this.amountSetformback(param);
+      console.log("Payment Successfully");
+    }
+  }, error => {
+    console.log(error);
+    this.dummy = [];
+    this.util.apiErrorHandler(error);
+  }).catch(error => {
+    console.log(error);
+    this.dummy = [];
+    this.util.apiErrorHandler(error);
+  });
+}
+
+
 
   sendNotification(statusName: any) {
     console.log(statusName);
@@ -323,8 +406,16 @@ export class HistoryDetailsPage implements OnInit {
       "id": this.id,
       "status": this.changeStatusOrder
     };
+    if(this.changeStatusOrder === 4 && this.paid == 'COD'){
+      this.makeCodMoney();
+    }else {
+      this.amountSetformback(param);
+    }
+  }
+
+  amountSetformback(setParam: any){
     this.util.show('Updating Order status');
-    this.api.post_private('v1/orders/update', param).then((data: any) => {
+    this.api.post_private('v1/orders/update', setParam).then((data: any) => {
       console.log(data);
       this.util.hide();
       this.sendNotification(this.changeStatusOrder);

@@ -19,8 +19,8 @@ export class HistoryPage implements OnInit {
     'created', // 0
     'accepted', // 1
     'rejected', // 2
-    'ongoing', // 3
-    'completed', // 4
+    'Picked', // 3
+    'Delivered', // 4
     'cancelled', // 5
     'refunded', // 6
     'delayed', // 7

@@ -156,7 +156,6 @@
                       </div>
                     </div>
                   </tab>
-
                   <tab>
                     <ng-template tabHeading
                       ><i class="icon-location-pin"></i>
@@ -211,7 +210,41 @@
                       </table>
                     </div>
                   </tab>
-
+                  <tab>
+                    <ng-template tabHeading 
+                      ><i class="icon-star"></i> {{ util.translate("Transaction") }}
+                    </ng-template>
+                    <div class="reviews">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>{{ util.translate("Type") }}</th>
+                            <th>{{ util.translate("Amount") }}</th>
+                            <th>{{ util.translate("Confirmed") }}</th>
+                            <th>{{ util.translate("Created at") }}</th>
+                            <th>{{ util.translate("Updated at") }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of transaction">
+                            <td>
+                              {{ item.type }}
+                            </td>
+                            <td>
+                              {{ item.amount }}
+                            </td>
+                            <td>{{ item.confirmed }}</td>
+                            <td>
+                              {{ item.created_at }}
+                            </td>
+                            <td>
+                              {{ item.updated_at }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </tab>
                   <tab>
                     <ng-template tabHeading
                       ><i class="icon-star"></i> {{ util.translate("Reviews") }}

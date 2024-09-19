@@ -134,12 +134,11 @@
     <div class="status_div" *ngIf="statusNumber == 1 || statusNumber == 3 || statusNumber == 7 ">
       <div style="width: 200px;">
         <ion-select [placeholder]="util.translate('Choose Status')" [(ngModel)]="changeStatusOrder">
-          <ion-select-option [value]="3"> {{util.translate('Ongoing')}} </ion-select-option>
-          <ion-select-option [value]="7"> {{util.translate('Delayed')}} </ion-select-option>
-          <ion-select-option [value]="4"> {{util.translate('Completed')}} </ion-select-option>
+          <ion-select-option [value]="3"> {{util.translate('Picked')}} </ion-select-option>
+          <ion-select-option [value]="4"> {{util.translate('Deliverd')}} </ion-select-option>
+          <!-- <ion-select-option [value]="4"> {{util.translate('Completed')}} </ion-select-option> -->
         </ion-select>
       </div>
-
       <div>
         <ion-button (click)="changeOrderStatus()" size="small">
           {{util.translate('Update Status')}}

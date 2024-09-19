@@ -357,9 +357,9 @@ export class AppSettingsComponent implements OnInit {
     if (this.address == '' || this.address == null || this.allowDistance == '' || this.allowDistance == null || this.allowDistance == 0 ||
       this.country == '' || this.country == null || this.currencyCode == '' || this.currencyCode == null || this.currencySymbol == '' || this.currencySymbol == null ||
       this.default_city_id == '' || this.default_city_id == null || this.default_country_code == null || this.default_country_code == null || this.default_delivery_zip == '' ||
-      this.default_delivery_zip == null || this.delivery_charge == '' || this.delivery_charge == null || this.email == '' || this.email == null || this.fcm_token == '' || this.fcm_token == null ||
+      this.default_delivery_zip == null || this.delivery_charge < 0  || this.email == '' || this.email == null || this.fcm_token == '' || this.fcm_token == null ||
       this.logo == '' || this.logo == null || this.mobile == '' || this.mobile == null || this.name == '' || this.name == null || this.search_radius == null || this.search_radius == '' ||
-      this.state == '' || this.state == null || this.tax == '' || this.tax == null || this.zip == '' || this.zip == null) {
+      this.state == '' || this.state == null || this.tax < 0 || this.zip == '' || this.zip == null) {
       this.util.error(this.util.translate('All fields are required'));
       return false;
     }

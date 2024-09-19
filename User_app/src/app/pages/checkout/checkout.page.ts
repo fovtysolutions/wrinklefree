@@ -405,19 +405,19 @@ export class CheckoutPage implements OnInit {
       return false;
     }
     if (this.deliveryOption == 'home') {
-      // console.log('address');
-      // this.swiper?.nativeElement.swiper.slideNext();
-      // this.cart.walletDiscount = 0;
-      // this.walletCheck = false;
-      // this.cart.calcuate();
-      // this.current = 2;
-      // this.getAddress();
-      console.log('payment');
-      this.swiper?.nativeElement.swiper.slideTo(2);
+      console.log('address');
+      this.swiper?.nativeElement.swiper.slideNext();
+      this.cart.walletDiscount = 0;
+      this.walletCheck = false;
       this.cart.calcuate();
-      this.current = 3;
-      this.getWallet();
-      this.getPayments();
+      this.current = 2;
+      this.getAddress();
+      // console.log('payment');
+      // this.swiper?.nativeElement.swiper.slideTo(2);
+      // this.cart.calcuate();
+      // this.current = 3;
+      // this.getWallet();
+      // this.getPayments();
 
     } else {
       console.log('payment');

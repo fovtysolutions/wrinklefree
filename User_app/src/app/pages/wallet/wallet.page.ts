@@ -102,12 +102,13 @@ export class WalletPage implements OnInit {
       console.log(data);
       this.dummy = [];
       if (data && data.status && data.status == 200 && data.data) {
-        this.balance = data.data.balance;
-        this.list = data.transactions;
-        this.list.forEach(element => {
-          element.created_at = moment(element.created_at).format('LL');
-        })
-        this.showInput = false;
+        // this.balance = data.data.balance;
+        // this.list = data.transactions;
+        // this.list.forEach(element => {
+        //   element.created_at = moment(element.created_at).format('LL');
+        // })
+        // this.showInput = false;
+        this.getWallet();
       }
     }, error => {
       console.log(error);

@@ -11,15 +11,31 @@
 
 <ion-content>
   <ion-item>
-    <ion-label position="floating"> {{util.translate('LOCATIONS')}} </ion-label>
-    <ion-input [(ngModel)]="address"></ion-input>
-  </ion-item>
-  <ion-item>
     <ion-label position="floating"> {{util.translate('HOUSE / FLAT NO')}} </ion-label>
     <ion-input [(ngModel)]="house"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating"> {{util.translate('LANDMARK')}} </ion-label>
+    <ion-label position="floating"> {{util.translate('Building name')}} </ion-label>
+    <ion-input [(ngModel)]="building"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating"> {{util.translate('Socity name')}} </ion-label>
+    <ion-input [(ngModel)]="socity"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating"> {{util.translate('Address')}} </ion-label>
+    <ion-input [(ngModel)]="address"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating"> {{util.translate('Street name')}} </ion-label>
+    <ion-input [(ngModel)]="street"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating"> {{util.translate('City')}} </ion-label>
+    <ion-input [(ngModel)]="city"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating"> {{util.translate('Lanmark')}} </ion-label>
     <ion-input [(ngModel)]="landmark"></ion-input>
   </ion-item>
   <ion-item>

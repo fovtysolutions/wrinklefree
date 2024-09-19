@@ -53,8 +53,8 @@ export class HistoryDetailsPage implements OnInit {
     'created', // 0
     'accepted', // 1
     'rejected', // 2
-    'ongoing', // 3
-    'completed', // 4
+    'Picked', // 3
+    'Delivered', // 4
     'cancelled', // 5
     'refunded', // 6
     'delayed', // 7
@@ -117,7 +117,7 @@ export class HistoryDetailsPage implements OnInit {
             console.log(address);
             this.deliveryLat = address.lat;
             this.deliveryLng = address.lng;
-            this.deliveryAddress = address.house + ' ' + address.address + ' ' + address.landmark + ' ' + address.pincode;
+            this.deliveryAddress = address.house + ' ' + address.building + ' ' + address.socity + ' ' + address.street + ' ' + address.address + ' ' + address.landmark + ' ' + address.city + ' ' + address.pincode;
           } else {
             this.deliveryAddress = this.util.translate('Self Drop & Pickup');
           }
